@@ -122,7 +122,8 @@ class LearningState(object):
     """Internal state shared between an LStarLearner and a LearnedAutomaton."""
 
     def __init__(self, classifier):
-        self.classify = lru_cache(typed=True, maxsize=1024)(classifier)
+        cached_classifier = lru_cache(maxsize=1024)(classifier)
+        self.classify = lambda c: cached_classifier(IntString(c))
         self.generation = 0
         self.experiments = []
         self.node_labels = IndexedList()
