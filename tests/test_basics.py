@@ -58,3 +58,11 @@ def test_can_handle_very_large_alphabets():
 
     for v in values:
         assert learner.is_consistent(v)
+
+
+@pytest.mark.parametrize('n', [1, 2, 10, 100])
+def test_can_learn_length_languages(n):
+    learner = LStarLearner(lambda ls: len(ls) == n)
+
+    learner.make_consistent([0] * n)
+    assert len(list(learner.learned_automaton.iter_nodes())) == n + 1
